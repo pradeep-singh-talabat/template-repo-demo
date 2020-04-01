@@ -1,0 +1,24 @@
+version: 2
+jobs:
+  release:
+    docker: hello-world    #replace with your actual image
+    working_directory: $CIRCLE_WORKING_DIRECTORY
+    steps:
+      - # put your actual steps here (this job is run by the step defined in .github/workflows/release-tagged-workflow.yml file)
+  qa:
+    docker: hello-world    #replace with your actual image
+    working_directory: $CIRCLE_WORKING_DIRECTORY
+    steps:
+      - # put your actual steps here (this job is run by the step defined in .github/workflows/approved-workflow.yml file)
+  dev:
+    docker:
+    - image: hello-world    #replace with your actual image
+    working_directory: $CIRCLE_WORKING_DIRECTORY
+    steps:
+      - # put your actual steps here (this job is run by the circleci webhook for PRs). Please make sure to turn building of PRs in your circleci project settings
+      - # you can visit this link to see how to enable building PRs on circleci: https://circleci.com/docs/2.0/oss/#only-build-pull-requests
+workflows:
+  version: 2
+  build_test_dev:
+    jobs:
+      - dev

@@ -1,0 +1,35 @@
+name: released workflow
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+jobs:
+  tag_created_job:
+    runs-on: ubuntu-latest
+    name: Deploy to Production environment
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Run the Circle CI Release build
+      id: curl-circle-ci
+      uses: Open-Source-Contrib/circle-ci-trigger-action@latest
+      with:
+        circle_ci_token: ${{ secrets.CIRCLE_CI_TOKEN }}
+        circle_ci_job: ${{ secrets.CIRCLE_CI_RELEASE_JOB }}
+        circle_ci_project_url: ${{ github.ref }}
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@latest
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Release Version ${{ github.ref }}. Please refer to Tag {{ github.ref }} to see all the commits in this release.
+          draft: false
+          prerelease: false
+    # Use the output from the `webhook` step
+    - name: Get the output response
+      run: echo "The response was ${{ steps.curl-circle-ci.outputs.response }}"
