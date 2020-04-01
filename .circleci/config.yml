@@ -1,22 +1,32 @@
 version: 2
 jobs:
   release:
-    docker: hello-world    #replace with your actual image
-    working_directory: $CIRCLE_WORKING_DIRECTORY
-    steps:
-      - # put your actual steps here (this job is run by the step defined in .github/workflows/release-tagged-workflow.yml file)
-  qa:
-    docker: hello-world    #replace with your actual image
-    working_directory: $CIRCLE_WORKING_DIRECTORY
-    steps:
-      - # put your actual steps here (this job is run by the step defined in .github/workflows/approved-workflow.yml file)
-  dev:
     docker:
     - image: hello-world    #replace with your actual image
     working_directory: $CIRCLE_WORKING_DIRECTORY
     steps:
-      - # put your actual steps here (this job is run by the circleci webhook for PRs). Please make sure to turn building of PRs in your circleci project settings
-      - # you can visit this link to see how to enable building PRs on circleci: https://circleci.com/docs/2.0/oss/#only-build-pull-requests
+      - checkout
+  qa:
+    docker:
+    - image: hello-world    #replace with your actual image
+    working_directory: $CIRCLE_WORKING_DIRECTORY
+    steps:
+      - checkout
+  dev:
+    docker:
+    - image: minamikhail/circle-ci:3.1
+    working_directory: $CIRCLE_WORKING_DIRECTORY
+    steps:
+      - checkout
+      - run:
+          name: Restore Packages
+          command: dotnet restore ./src/MyFabulousStuff.sln
+      - run:
+          name: Build Solution
+          command: dotnet build ./src/MyFabulousStuff.sln
+      - run:
+          name: Test Solution
+          command: dotnet test ./src/MyFabulousStuff.sln
 workflows:
   version: 2
   build_test_dev:

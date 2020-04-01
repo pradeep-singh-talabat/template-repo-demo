@@ -1,6 +1,6 @@
-# [YOUR_REPOSITORY_NAME]
+# Test Repo To Be Killed
 
-[YOUR_PROJECT_DESCRIPTION]
+I will delete this repo after the demo
 
 ## Repository Structure
 
@@ -41,7 +41,7 @@ This folder contains the Github Metadata and Workflow files which are used in th
 
 ### pull_request_template.md
 
-This is the pull request markdown template file which is used for to automatically put a nice template on your pull request whenever to create a new pull request. ~~You can customize or extend this in your repositories when to you create a new repository using this template. Please make sure you remove this part (crossed out text) from destination repository file.~~
+This is the pull request markdown template file which is used for to automatically put a nice template on your pull request whenever to create a new pull request.
 
 ### workflows directory
 
